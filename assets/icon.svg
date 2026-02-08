@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- Book cover -->
+  <rect x="24" y="12" width="80" height="104" rx="4" fill="#00897B"/>
+  <!-- Spine -->
+  <rect x="24" y="12" width="14" height="104" rx="4" fill="#00695C"/>
+  <!-- Spine lines -->
+  <line x1="31" y1="20" x2="31" y2="108" stroke="#004D40" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <!-- Pages -->
+  <rect x="42" y="18" width="56" height="92" rx="2" fill="#FFFDE7"/>
+  <!-- Text lines -->
+  <line x1="50" y1="36" x2="90" y2="36" stroke="#BDBDBD" stroke-width="2" stroke-linecap="round"/>
+  <line x1="50" y1="48" x2="86" y2="48" stroke="#BDBDBD" stroke-width="2" stroke-linecap="round"/>
+  <line x1="50" y1="60" x2="88" y2="60" stroke="#BDBDBD" stroke-width="2" stroke-linecap="round"/>
+  <line x1="50" y1="72" x2="82" y2="72" stroke="#BDBDBD" stroke-width="2" stroke-linecap="round"/>
+  <line x1="50" y1="84" x2="90" y2="84" stroke="#BDBDBD" stroke-width="2" stroke-linecap="round"/>
+  <!-- Bookmark ribbon -->
+  <polygon points="78,12 86,12 86,32 82,26 78,32" fill="#EF5350"/>
+</svg>

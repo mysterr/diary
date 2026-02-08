@@ -1,0 +1,27 @@
+name: diary
+description: A cross-platform desktop diary app.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.7.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  sqflite_common_ffi: ^2.3.4+4
+  sqflite_common: ^2.5.4+5
+  table_calendar: ^3.2.0
+  fl_chart: ^0.70.2
+  provider: ^6.1.2
+  shared_preferences: ^2.5.3
+  path_provider: ^2.1.5
+  intl: ^0.20.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
