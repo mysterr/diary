@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:path_provider/path_provider.dart';
@@ -14,6 +15,9 @@ import 'package:diary/providers/reports_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize all locale data for intl/calendar formatting.
+  await initializeDateFormatting();
 
   // Initialize FFI for desktop SQLite.
   sqfliteFfiInit();

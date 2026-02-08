@@ -11,32 +11,44 @@ class HomeScreen extends StatelessWidget {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Diary'),
-          bottom: const TabBar(
-            tabs: [
-              Tab(icon: Icon(Icons.book), text: 'Diary'),
-              Tab(icon: Icon(Icons.bar_chart), text: 'Reports'),
-            ],
-          ),
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.settings),
-              tooltip: 'Settings',
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) => const SettingsScreen(),
-                  ),
-                );
-              },
-            ),
-          ],
-        ),
-        body: const TabBarView(
+        body: Column(
           children: [
-            DiaryTab(),
-            ReportsTab(),
+            Material(
+              color: Theme.of(context).colorScheme.surface,
+              surfaceTintColor: Theme.of(context).colorScheme.surfaceTint,
+              elevation: 2,
+              child: Row(
+                children: [
+                  const Expanded(
+                    child: TabBar(
+                      tabs: [
+                        Tab(icon: Icon(Icons.book), text: 'Diary'),
+                        Tab(icon: Icon(Icons.bar_chart), text: 'Reports'),
+                      ],
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.settings),
+                    tooltip: 'Settings',
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => const SettingsScreen(),
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ),
+            const Expanded(
+              child: TabBarView(
+                children: [
+                  DiaryTab(),
+                  ReportsTab(),
+                ],
+              ),
+            ),
           ],
         ),
       ),

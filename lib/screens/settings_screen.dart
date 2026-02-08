@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:diary/providers/settings_provider.dart';
@@ -27,8 +28,28 @@ class _SettingsScreenState extends State<SettingsScreen> {
     super.dispose();
   }
 
+  static const _availableLocales = <String, String>{
+    'en_US': 'English (US)',
+    'en_GB': 'English (UK)',
+    'de_DE': 'Deutsch',
+    'fr_FR': 'Français',
+    'es_ES': 'Español',
+    'it_IT': 'Italiano',
+    'pt_BR': 'Português (Brasil)',
+    'nl_NL': 'Nederlands',
+    'pl_PL': 'Polski',
+    'ru_RU': 'Русский',
+    'uk_UA': 'Українська',
+    'ja_JP': '日本語',
+    'zh_CN': '中文 (简体)',
+    'ko_KR': '한국어',
+    'ar_SA': 'العربية',
+  };
+
   @override
   Widget build(BuildContext context) {
+    final settingsProvider = context.watch<SettingsProvider>();
+
     return Scaffold(
       appBar: AppBar(title: const Text('Settings')),
       body: Padding(
@@ -93,6 +114,52 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   child: const Text('Save'),
                 ),
               ],
+            ),
+            const SizedBox(height: 32),
+            Text(
+              'Regional Settings',
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            const SizedBox(height: 8),
+            const Text(
+              'Set the locale for calendar display — day/month names, '
+              'first day of week, and date formatting.',
+            ),
+            const SizedBox(height: 16),
+            SizedBox(
+              width: 300,
+              child: InputDecorator(
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Locale',
+                ),
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton<String>(
+                    value: settingsProvider.locale ?? '',
+                    isDense: true,
+                    isExpanded: true,
+                    items: [
+                      DropdownMenuItem<String>(
+                        value: '',
+                        child: Text(
+                          'System Default (${Platform.localeName})',
+                        ),
+                      ),
+                      ..._availableLocales.entries.map(
+                        (e) => DropdownMenuItem<String>(
+                          value: e.key,
+                          child: Text('${e.value} (${e.key})'),
+                        ),
+                      ),
+                    ],
+                    onChanged: (value) {
+                      settingsProvider.setLocale(
+                        value == null || value.isEmpty ? null : value,
+                      );
+                    },
+                  ),
+                ),
+              ),
             ),
           ],
         ),

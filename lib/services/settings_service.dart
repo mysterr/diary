@@ -6,6 +6,7 @@ class SettingsService {
   static const _winYKey = 'window_y';
   static const _winWidthKey = 'window_width';
   static const _winHeightKey = 'window_height';
+  static const _localeKey = 'locale';
 
   final SharedPreferences _prefs;
 
@@ -15,6 +16,16 @@ class SettingsService {
 
   Future<void> setDbPath(String path) async {
     await _prefs.setString(_dbPathKey, path);
+  }
+
+  String? getLocale() => _prefs.getString(_localeKey);
+
+  Future<void> setLocale(String? locale) async {
+    if (locale == null) {
+      await _prefs.remove(_localeKey);
+    } else {
+      await _prefs.setString(_localeKey, locale);
+    }
   }
 
   ({double x, double y, double width, double height})? getWindowGeometry() {

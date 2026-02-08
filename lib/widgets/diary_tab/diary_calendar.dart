@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:diary/providers/diary_provider.dart';
+import 'package:diary/providers/settings_provider.dart';
 import 'package:diary/utils/color_utils.dart';
 import 'package:diary/utils/date_utils.dart' as app_date_utils;
 
@@ -11,9 +13,33 @@ class DiaryCalendar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider = context.watch<DiaryProvider>();
+    final settings = context.watch<SettingsProvider>();
     final today = app_date_utils.normalizeDate(DateTime.now());
 
+    // intl FIRSTDAYOFWEEK: 0=Mon, 1=Tue, ..., 6=Sun
+    const intlToTableCalendar = [
+      StartingDayOfWeek.monday,
+      StartingDayOfWeek.tuesday,
+      StartingDayOfWeek.wednesday,
+      StartingDayOfWeek.thursday,
+      StartingDayOfWeek.friday,
+      StartingDayOfWeek.saturday,
+      StartingDayOfWeek.sunday,
+    ];
+    final locale = settings.effectiveLocale;
+    final map = dateTimeSymbolMap();
+    // Try exact locale (e.g. "en_US"), then strip encoding suffix
+    // (e.g. "en_US.UTF-8" → "en_US"), then language only (e.g. "en").
+    final clean = locale.split('.').first;
+    final symbols = map[clean] ?? map[clean.split('_').first];
+    final startingDay = symbols != null
+        ? intlToTableCalendar[symbols.FIRSTDAYOFWEEK]
+        : StartingDayOfWeek.sunday;
+
     return TableCalendar(
+      locale: locale,
+      startingDayOfWeek: startingDay,
+      daysOfWeekHeight: 24,
       firstDay: DateTime(2000, 1, 1),
       lastDay: today,
       focusedDay: provider.selectedDate.isAfter(today)

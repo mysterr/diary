@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:window_manager/window_manager.dart';
+import 'package:diary/providers/settings_provider.dart';
 import 'package:diary/screens/home_screen.dart';
 import 'package:diary/services/settings_service.dart';
 
@@ -55,9 +57,14 @@ class _DiaryAppState extends State<DiaryApp> with WindowListener {
 
   @override
   Widget build(BuildContext context) {
+    final settings = context.watch<SettingsProvider>();
+    final localeParts = settings.effectiveLocale.split('_');
+    final locale = Locale(localeParts[0], localeParts.length > 1 ? localeParts[1] : null);
+
     return MaterialApp(
       title: 'Diary',
       debugShowCheckedModeBanner: false,
+      locale: locale,
       theme: ThemeData(
         colorSchemeSeed: Colors.teal,
         useMaterial3: true,
