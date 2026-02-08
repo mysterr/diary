@@ -1,2 +1,3 @@
 # diary
-Diary app
+Simple Diary app
+Vibecoded using claude code
