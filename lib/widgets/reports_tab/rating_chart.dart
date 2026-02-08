@@ -99,7 +99,20 @@ class RatingChart extends StatelessWidget {
                 spots: spots,
                 isCurved: true,
                 preventCurveOverShooting: true,
-                color: Theme.of(context).colorScheme.primary,
+                gradient: entries.length >= 2
+                    ? LinearGradient(
+                        colors: entries
+                            .map((e) => ratingToColor(e.rating))
+                            .toList(),
+                        stops: List.generate(
+                          entries.length,
+                          (i) => i / (entries.length - 1),
+                        ),
+                      )
+                    : null,
+                color: entries.length < 2
+                    ? ratingToColor(entries.first.rating)
+                    : null,
                 barWidth: 2,
                 dotData: FlDotData(
                   show: entries.length <= 60,
@@ -114,10 +127,22 @@ class RatingChart extends StatelessWidget {
                 ),
                 belowBarData: BarAreaData(
                   show: true,
-                  color: Theme.of(context)
-                      .colorScheme
-                      .primary
-                      .withValues(alpha: 0.1),
+                  gradient: entries.length >= 2
+                      ? LinearGradient(
+                          colors: entries
+                              .map((e) => ratingToColor(e.rating)
+                                  .withValues(alpha: 0.15))
+                              .toList(),
+                          stops: List.generate(
+                            entries.length,
+                            (i) => i / (entries.length - 1),
+                          ),
+                        )
+                      : null,
+                  color: entries.length < 2
+                      ? ratingToColor(entries.first.rating)
+                          .withValues(alpha: 0.15)
+                      : null,
                 ),
               ),
             ],
