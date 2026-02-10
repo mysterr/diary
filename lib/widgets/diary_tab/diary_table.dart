@@ -4,17 +4,64 @@ import 'package:intl/intl.dart';
 import 'package:diary/providers/diary_provider.dart';
 import 'package:diary/utils/color_utils.dart';
 
-class DiaryTable extends StatelessWidget {
+class DiaryTable extends StatefulWidget {
   const DiaryTable({super.key});
+
+  @override
+  State<DiaryTable> createState() => _DiaryTableState();
+}
+
+class _DiaryTableState extends State<DiaryTable> {
+  final _searchController = TextEditingController();
+  String _searchQuery = '';
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     final provider = context.watch<DiaryProvider>();
-    final entries = provider.allEntries;
+    final allEntries = provider.allEntries;
+    final entries = _searchQuery.isEmpty
+        ? allEntries
+        : allEntries
+            .where((e) =>
+                e.note.toLowerCase().contains(_searchQuery.toLowerCase()))
+            .toList();
     final dateFormat = DateFormat('yyyy-MM-dd');
 
     return Column(
       children: [
+        // Search field.
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
+          child: TextField(
+            controller: _searchController,
+            decoration: InputDecoration(
+              hintText: 'Search notes...',
+              prefixIcon: const Icon(Icons.search, size: 20),
+              suffixIcon: _searchQuery.isNotEmpty
+                  ? IconButton(
+                      icon: const Icon(Icons.clear, size: 20),
+                      onPressed: () {
+                        _searchController.clear();
+                        setState(() => _searchQuery = '');
+                      },
+                    )
+                  : null,
+              isDense: true,
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+            onChanged: (value) => setState(() => _searchQuery = value),
+          ),
+        ),
         // Fixed header row.
         Container(
           color: Theme.of(context).colorScheme.surfaceContainerHighest,

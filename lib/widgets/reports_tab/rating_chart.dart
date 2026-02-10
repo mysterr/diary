@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:diary/models/diary_entry.dart';
+import 'package:diary/providers/settings_provider.dart';
 import 'package:diary/utils/color_utils.dart';
 
 class RatingChart extends StatelessWidget {
@@ -18,12 +20,14 @@ class RatingChart extends StatelessWidget {
       );
     }
 
+    final locale = context.watch<SettingsProvider>().effectiveLocale;
+
     final spots = <FlSpot>[];
     for (var i = 0; i < entries.length; i++) {
       spots.add(FlSpot(i.toDouble(), entries[i].rating.toDouble()));
     }
 
-    final dateFormat = DateFormat('MM/dd');
+    final dateFormat = DateFormat.MMMd(locale);
 
     return SizedBox(
       height: 300,
