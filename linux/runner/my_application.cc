@@ -65,6 +65,15 @@ static void my_application_activate(GApplication* application) {
   gtk_widget_show(GTK_WIDGET(view));
   gtk_container_add(GTK_CONTAINER(window), GTK_WIDGET(view));
 
+  // Set the window icon from bundled assets.
+  g_autofree gchar* exe_path = g_file_read_link("/proc/self/exe", NULL);
+  if (exe_path != NULL) {
+    g_autofree gchar* exe_dir = g_path_get_dirname(exe_path);
+    g_autofree gchar* icon_path = g_build_filename(
+        exe_dir, "data", "flutter_assets", "assets", "icon.png", NULL);
+    gtk_window_set_icon_from_file(window, icon_path, NULL);
+  }
+
   // Show the window when Flutter renders.
   // Requires the view to be realized so we can start rendering.
   g_signal_connect_swapped(view, "first-frame", G_CALLBACK(first_frame_cb),
